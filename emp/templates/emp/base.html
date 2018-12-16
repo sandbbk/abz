@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+{% load static %}
+{% load mptt_tags %}
+<html>
+
+    <head>
+        <title>Employees of the Corporation "BIG"</title>
+        <link rel="stylesheet" href="{% static 'css/emp.css' %}">
+        <script type="text/javascript" src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/ajax.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/del.js' %}"></script>
+    </head>
+    <body class="body">
+       <div class="page-header">
+           <div>
+                <h1><a href="/emp/">Employees of the Corporation "BIG"</a></h1>
+           </div>
+           <div>
+                <a href="{% url 'make_emp' %}">!!!!!!Seeder!!!!!</a>
+           </div>
+            <div class="menu">
+                <div><a href="{% url 'root' %}">Base page</a></div>
+                <div><a href="{% url 'all_table' %}">Simple table</a></div>
+                <div><a href="{% url 'ajx' %}">Extended page</a></div>
+                <div><a href="{% url 'create' %}">Create an employee</a></div>
+            </div>
+            {% block pageheader %}
+            {% endblock %}
+       </div>
+
+       <div class="main" >
+
+           {% block main %}
+           {% endblock main %}
+       </div>
+       <div class = "footer">
+           <div>
+               <a href="/emp/"><h4>Home</h4></a>
+           </div>
+           <div>
+               <address>Project of Andrew Serdyuk.    e-mail: sandbbk@gmail.com</address>
+           </div>
+       </div>
+    </body>
+
+</html>

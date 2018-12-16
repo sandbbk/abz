@@ -1,0 +1,51 @@
+{% extends 'emp/base.html' %}
+
+{%block pageheader %}
+     <div class="login">
+          {% if user.is_authenticated %}
+            <a href="{% url 'logout' %}?next={{request.path}}">Logout</a>
+            <p>You are logined as {{user}}.</p>
+          {% else %}
+            <a href="{% url 'login' %}?next={{request.path}}">Login</a>
+            <a href="{%url 'register' %}?next={{request.path}}">Register</a>
+          {% endif %}
+     </div>
+{% endblock %}
+
+{% block main %}
+
+<div id="change">
+    <div class="detail">
+    <p>Employees name, surname, fathers: {{ emp.full_name }}</p>
+    <p>Position of employee: {{ emp.emp_position }}</p>
+    <p>Level of employee in structure (highest is 0): {{ emp.level }}</p>
+    <p>Chief of employee (level 0 has no chief): {{ emp.chief}}</p>
+    <p>Date of recruit of employee: {{ emp.date_of_recruit }}</p>
+    <p>Salary of employee: {{ emp.salary }}</p>
+    <p>Employees id: {{emp.id}}</p>
+    <p>Employees lft: {{emp.lft}}</p>
+    <p>{% if emp.photo %}
+        <img src="{{ emp.photo.url }}">
+        {% else %}
+          <p>No image</p>
+        {% endif %}
+    </div>
+    <div class="form">
+        <h1>Edit employee</h1>
+        <form method = "POST" class = "form" enctype="multipart/form-data">{% csrf_token %}
+            {{ form.as_p }}
+            <button type = "submit" class = "save">Save</button>
+        </form>
+    </div>
+<br/>
+<form id="del" method="">
+    {% csrf_token %}
+
+        <input name="delete" value="del" type="hidden">
+        <input name="empl" value="{{emp.id}}" type="hidden">
+    <button  type ="button" value="del" >Delete employee</button>
+
+</form>
+ </div>
+
+{% endblock %}

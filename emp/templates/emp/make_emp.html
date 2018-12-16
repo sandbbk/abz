@@ -1,0 +1,21 @@
+
+{% extends 'emp/base.html' %}
+{% block main%}
+<div>
+    <form method = "POST" class = "form" enctype="form-data">{% csrf_token %}
+        <p> Select chiefs level
+        <select name="Chief level" size="1" >
+            <option value="0">0</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+        </select>
+        </p>
+        <p>Input quantity of employees
+        <input type="number" name="quantity">
+        </p>
+        <button type = "submit" class = "save">Submit</button>
+    </form>
+</div>
+{% endblock %}

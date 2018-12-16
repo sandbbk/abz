@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+{% extends 'emp/base.html' %}
+{% load static %}
+
+{% block pageheader %}
+
+     <div class="login">
+          {% if user.is_authenticated %}
+            <a href="{% url 'logout' %}?next={{request.path}}">Logout</a>
+            <p>You are logined as {{user}}.</p>
+          {% else %}
+            <a href="{% url 'login' %}?next={{request.path}}">Login</a>
+            <a href="{%url 'register' %}?next={{request.path}}">Register</a>
+          {% endif %}
+     </div>
+
+      <form id="aj_form" action="" >{% csrf_token %}
+       <div>
+           <label for="field">Search in column</label>
+           <select  name="field" id="field" >
+                 <option value="full_name">full name</option>
+                 <option value="id">id</option>
+                 <option value="chief">chief</option>
+                 <option value="emp_position">employee position</option>
+                 <option value="date_of_recruit">date of recruit</option>
+                 <option value="salary">salary</option>
+                 <option value="level">level</option>
+           </select>
+
+       </div>
+               <div>
+                    <label for="text">Text for search</label><input type="text" name="text" id="text">
+               </div>
+       <div>
+                    <label for="order">Ordering by:</label>
+                   <select name="order_by" id="order" >
+                       <option value="full_name">full name</option>
+                       <option value="-full_name">full name reverse</option>
+                       <option value="id">id</option>
+                       <option value="-id">id reverse</option>
+                       <option value="chief__full_name">chief</option>
+                       <option value="-chief__full_name">chief reverse</option>
+                       <option value="emp_position">employee position</option>
+                       <option value="-emp_position">employee position reverse</option>
+                       <option value="date_of_recruit">date of recruit</option>
+                       <option value="-date_of_recruit">date of recruit reverse</option>
+                       <option value="salary">salary</option>
+                       <option value="-salary">salary reverse</option>
+                   </select>
+
+       </div>
+               <button type="button">Apply</button>
+           </form>
+{% endblock %}
+
+{% block main %}
+<div id="aj_ch">
+    <table>
+                 <tr>
+                     <th>full name</th>
+                     <th>position of employee</th>
+                     <th>level</th>
+                     <th>chief</th>
+                     <th>Date of recruit</th>
+                     <th>salary</th>
+                     <th>photo</th>
+                     <th>id (click for editing employee)</th>
+                </tr>
+        {% for node in emps %}
+                <tr>
+                    <td><a href="{% url 'descendants' %}?id={{node.id}}">{{ node.full_name }}</a></td>
+                    <td>{{ node.emp_position }}</td>
+                    <td>{{ node.level }}</td>
+                    <td>{{ node.chief}}</td>
+                    <td>{{ node.date_of_recruit }}</td>
+                    <td>{{ node.salary }}</td>
+                    <td>{% if node.photo %}
+                         <img src="{{ node.photo.url }}" height="30px">
+                         {% else %}
+                         <p>No image</p>
+                         {% endif %}
+                    </td>
+                    <td><a href="{% url 'ajx' %}/{{node.pk}}">{{node.id}}</a></td>
+                </tr>
+        {% endfor %}
+    </table>
+      <div class="paginator">
+               {% if emps.has_previous %}
+                <span class="active">
+                    <a href="?page={{emps.previous_page_number}}">&laquo;</a>
+                </span>
+                {% else %}
+                    <span class="unactive">
+                        <a href="">&laquo;</a>
+                    </span>
+                {% endif %}
+                {% for num in p_list %}
+                    {% if num == emps.number %}
+                        <span class="this">
+                            <a href="?page={{num}}">{{num}}</a>
+                        </span>
+                    {% else %}
+                        <span>
+                            <a href="?page={{num}}">{{num}}</a>
+                        </span>
+                    {% endif %}
+                {% endfor %}
+                {% if emps.has_next %}
+                <span class="active">
+                    <a href="?page={{emps.next_page_number}}">&raquo;</a>
+                </span>
+                 {% else %}
+                    <span class="unactive">
+                        <a href="">&raquo;</a>
+                    </span>
+                {% endif %}
+        </div>
+</div>
+
+{% endblock %}

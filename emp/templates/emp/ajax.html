@@ -1,0 +1,62 @@
+{% block main %}
+    <table>
+                 <tr>
+                     <th>full name</th>
+                     <th>position of employee</th>
+                     <th>level</th>
+                     <th>chief</th>
+                     <th>Date of recruit</th>
+                     <th>salary</th>
+                     <th>photo</th>
+                     <th>id (click for editing employee)</th>
+                </tr>
+        {% for node in emps %}
+                <tr>
+                    <td><a href="{% url 'descendants' %}">{{ node.full_name }}</a></td>
+                    <td>{{ node.emp_position }}</td>
+                    <td>{{ node.level }}</td>
+                    <td>{{ node.chief}}</td>
+                    <td>{{ node.date_of_recruit }}</td>
+                    <td>{{ node.salary }}</td>
+                    <td>{% if node.photo %}
+                         <img src="{{ node.photo.url }}" height="30px">
+                         {% else %}
+                         <p>No image</p>
+                         {% endif %}
+                    </td>
+                      <td><a href="{% url 'ajx' %}/{{node.pk}}">{{node.id}}</a></td>
+                </tr>
+        {% endfor %}
+    </table>
+      <div class="paginator">
+               {% if emps.has_previous %}
+                <span class="active">
+                    <a href="?page={{emps.previous_page_number}}">&laquo;</a>
+                </span>
+                {% else %}
+                    <span class="unactive">
+                        <a href="">&laquo;</a>
+                    </span>
+                {% endif %}
+                {% for num in p_list %}
+                    {% if num == emps.number %}
+                        <span class="this">
+                            <a href="?page={{num}}">{{num}}</a>
+                        </span>
+                    {% else %}
+                        <span>
+                            <a href="?page={{num}}">{{num}}</a>
+                        </span>
+                    {% endif %}
+                {% endfor %}
+                {% if emps.has_next %}
+                <span class="active">
+                    <a href="?page={{emps.next_page_number}}">&raquo;</a>
+                </span>
+                 {% else %}
+                    <span class="unactive">
+                        <a href="">&raquo;</a>
+                    </span>
+                {% endif %}
+        </div>
+{% endblock %}

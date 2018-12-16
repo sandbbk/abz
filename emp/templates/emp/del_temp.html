@@ -1,0 +1,10 @@
+{% block main %}
+
+        <p> A you sure, you want to delete employee  {{ emp }}? </p>
+
+            <a href="{% url 'del'%}?id={{emp.id}}"><button type="button" >YES</button></a>
+
+            <a href="{% url 'ajx' %}/{{emp.id}}"><button>NO</button></a>
+
+</script>
+{% endblock %}
