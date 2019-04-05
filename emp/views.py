@@ -13,20 +13,17 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 # Create your views here.
 
 
-def p_range(pages, num_page):
-    p_set = set()
-    if not num_page:
+def p_range(pages, num_page):   # function which creates convenient list of page-numbers;
+    p_set = {1, pages.num_pages}
+    try:
+        num_page = int(num_page)
+    except (ValueError, TypeError):
         num_page = 1
-    for n in pages.page_range:
-        if n == int(num_page):
-            for d in range(n - 5, n + 6):
-                if 1 <= d <= pages.num_pages:
-                    p_set.add(d)
-    s = (k for k in range(1, pages.num_pages + 1) if k % 50 == 0 or k == 1 or k == pages.num_pages)
-    for k in s:
-        p_set.add(k)
-    p_list = sorted(list(p_set))
-    return p_list
+    base_set = set(pages.page_range)
+    p_set.update(range(num_page - 5, num_page + 6))
+    p_set.update(range(0, pages.num_pages, 50))
+    p_set.intersection_update(base_set)
+    return sorted(list(p_set))
 
 
 def ftree(request):
